@@ -2,7 +2,10 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8080/api';
+let API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8080/api';
+if (API_BASE_URL.endsWith('/')) {
+  API_BASE_URL = API_BASE_URL.slice(0, -1);
+}
 
 export const useAuth = () => {
   return useContext(AuthContext);

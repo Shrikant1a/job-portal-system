@@ -61,6 +61,7 @@ public class ApiServer {
         server.createContext("/api/profile", new ProfileHandler());
         server.createContext("/api/external-jobs", new ExternalJobsHandler());
         server.createContext("/api/health", new HealthHandler());
+        server.createContext("/", new DefaultHandler()); // Handle root and 404s
 
         server.setExecutor(null); // creates a default executor
         System.out.println("Server started on port " + port);
@@ -313,6 +314,18 @@ public class ApiServer {
         }
     }
 
+    static class DefaultHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            addCorsHeaders(exchange);
+            if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(204, -1);
+                return;
+            }
+            sendError(exchange, 404, "Not Found. Make sure your API URL ends with /api");
+        }
+    }
+
     private static boolean checkAuth(HttpExchange exchange) throws IOException {
         if (App.logginUser == null) {
             sendError(exchange, 401, "Authentication required. Please login first.");
@@ -338,6 +351,7 @@ public class ApiServer {
     }
 
     private static void sendError(HttpExchange exchange, int statusCode, String message) throws IOException {
+        addCorsHeaders(exchange); // Ensure CORS is present even on errors
         Map<String, String> error = new HashMap<>();
         error.put("error", message);
         sendResponse(exchange, statusCode, error);

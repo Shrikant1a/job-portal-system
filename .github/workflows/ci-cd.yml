@@ -1,0 +1,82 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: './frontend/package-lock.json'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build frontend
+      run: npm run build
+
+    - name: Upload Frontend Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: frontend-dist
+        path: frontend/dist
+
+  build-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Create bin directory
+      run: mkdir -p bin
+
+    - name: Compile Backend
+      run: |
+        javac -cp "lib/*" -d bin src/com/jobportal/application/*.java src/com/jobportal/application/models/*.java
+
+    - name: Archive Backend Classes
+      run: |
+        cd bin
+        jar -cvf ../HireNova-Backend.jar .
+        
+    - name: Upload Backend Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: backend-jar
+        path: HireNova-Backend.jar
+
+  # Future Deployment Job
+  # deploy:
+  #   needs: [build-frontend, build-backend]
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   steps:
+  #     - name: Download Frontend
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: frontend-dist
+  #     - name: Download Backend
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: backend-jar
+  #     # Add deployment steps here (e.g., to AWS, Heroku, etc.)

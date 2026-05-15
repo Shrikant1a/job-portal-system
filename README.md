@@ -4,6 +4,28 @@ HireNova is a modern, high-fidelity job portal designed to connect talented prof
 
 ---
 
+## 📸 Screenshots
+
+### 🏠 Home Page
+![Home Page](screenshot/homepage.png)
+
+### 🔑 Login Page
+![Login Page](screenshot/login.png)
+
+### 💼 Find Jobs
+![Jobs Page](screenshot/jobs.png)
+
+### 🏢 Companies
+![Companies Page](screenshot/companies.png)
+
+### 🌍 Live Global Jobs
+![Live Jobs](screenshot/live_jobs.png)
+
+### 👤 User Profile
+![Profile Page](screenshot/profile.png)
+
+---
+
 ## 🚀 Getting Started
 
 Follow these instructions to get the project up and running on your local machine.
@@ -89,3 +111,17 @@ The system connects to a MySQL database. Configuration can be found in:
 For any issues or inquiries, please contact the support team at **support@hirenova.com**.
 
 © 2026 HireNova. Built with ❤️ for professionals worldwide.
+
+---
+
+## 🏗️ Architecture & Design
+
+### 📊 Activity Flow Diagram
+![Activity Flow](activity_flow_diagram.jpg)
+
+### 📐 Class Diagram
+![Class Diagram](class_diagram.jpg)
+
+### 🗄️ Database Schema
+![Database Schema](db.png)
+

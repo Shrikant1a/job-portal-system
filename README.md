@@ -1,5 +1,7 @@
 # HireNova - Premium Job Matching Platform ✨
 
+![CI/CD Pipeline](https://github.com/Shrikant1a/job-portal-system/actions/workflows/ci-cd.yml/badge.svg)
+
 HireNova is a modern, high-fidelity job portal designed to connect talented professionals with world-class opportunities. Featuring a sleek dark-themed interface with glassmorphism aesthetics, it provides a seamless experience for both job seekers and employers.
 
 ---

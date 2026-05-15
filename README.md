@@ -113,6 +113,8 @@ The project includes a robust CI/CD pipeline powered by **GitHub Actions**:
 - **Backend Build**: Compiles Java source files and packages them into a JAR.
 - **Artifacts**: Each successful build generates production-ready artifacts for both the frontend and backend.
 
+For more details, see the [CI/CD Documentation](docs/ci-cd-pipeline.md).
+
 ## 🤝 Support
 
 For any issues or inquiries, please contact the support team at **support@hirenova.com**.

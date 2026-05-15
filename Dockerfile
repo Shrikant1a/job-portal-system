@@ -3,19 +3,20 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-# Copy only necessary files for the backend build
+# Copy the entire backend structure
 COPY lib/ ./lib/
 COPY src/ ./src/
 
 # Create bin directory
 RUN mkdir -p bin
 
-# Compile the Java application
-# Note: Ensure all subpackages are included if they exist
-RUN javac -cp "lib/*" -d bin src/com/jobportal/application/*.java src/com/jobportal/application/models/*.java
+# Use a more robust way to find and compile all Java files
+# This handles nested packages and multiple files more reliably
+RUN find src -name "*.java" > sources.txt && \
+    javac -cp "lib/*" -d bin @sources.txt
 
-# Run stage
+# Expose the port
 EXPOSE 8080
 
-# The PORT environment variable is automatically handled by the ApiServer code
+# Run the application
 CMD ["java", "-cp", "bin:lib/*", "com.jobportal.application.ApiServer"]

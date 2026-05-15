@@ -23,6 +23,19 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  const checkServer = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/health`);
+      const data = await response.json();
+      if (data.database !== 'connected') {
+        return { online: true, db: false, message: 'Server is up, but Database connection failed.' };
+      }
+      return { online: true, db: true };
+    } catch (error) {
+      return { online: false, message: 'HireNova API server is not running. Please start the backend on port 8080.' };
+    }
+  };
+
   const login = async (email, password) => {
     try {
       const response = await fetch(`${API_BASE_URL}/login`, {
@@ -40,7 +53,8 @@ export const AuthProvider = ({ children }) => {
         return { success: false, error: data.error };
       }
     } catch (error) {
-      return { success: false, error: 'Server connection failed' };
+      const serverStatus = await checkServer();
+      return { success: false, error: serverStatus.message || 'Server connection failed' };
     }
   };
 
@@ -53,13 +67,13 @@ export const AuthProvider = ({ children }) => {
       });
       const data = await response.json();
       if (data.success) {
-        // After signup, we might want to log them in or just redirect to login
         return { success: true };
       } else {
         return { success: false, error: data.error };
       }
     } catch (error) {
-      return { success: false, error: 'Server connection failed' };
+      const serverStatus = await checkServer();
+      return { success: false, error: serverStatus.message || 'Server connection failed' };
     }
   };
 

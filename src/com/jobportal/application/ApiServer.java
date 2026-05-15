@@ -56,6 +56,7 @@ public class ApiServer {
         server.createContext("/api/companies", new CompaniesHandler());
         server.createContext("/api/profile", new ProfileHandler());
         server.createContext("/api/external-jobs", new ExternalJobsHandler());
+        server.createContext("/api/health", new HealthHandler());
 
         server.setExecutor(null); // creates a default executor
         System.out.println("Server started on port " + PORT);
@@ -234,6 +235,31 @@ public class ApiServer {
                     sendError(exchange, 500, "Error generating profile");
                 }
             }
+        }
+    }
+
+    static class HealthHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            addCorsHeaders(exchange);
+            if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
+                exchange.sendResponseHeaders(204, -1);
+                return;
+            }
+
+            Map<String, Object> status = new HashMap<>();
+            status.put("status", "ok");
+            status.put("serverTime", LocalDateTime.now().toString());
+            
+            try {
+                App.reconnect();
+                boolean dbConnected = (App.conn != null && !App.conn.isClosed());
+                status.put("database", dbConnected ? "connected" : "disconnected");
+            } catch (Exception e) {
+                status.put("database", "error: " + e.getMessage());
+            }
+
+            sendResponse(exchange, 200, status);
         }
     }
 

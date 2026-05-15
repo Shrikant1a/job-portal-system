@@ -9,28 +9,20 @@ on:
 jobs:
   build-frontend:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./frontend
-
     steps:
     - uses: actions/checkout@v4
 
-    - name: Use Node.js
+    - name: Setup Node.js 22
       uses: actions/setup-node@v4
       with:
-        node-version: '22'
-        cache: 'npm'
-        cache-dependency-path: './frontend/package-lock.json'
+        node-version: 22
 
-    - name: Check Node.js version
-      run: node -v
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Build frontend
-      run: npm run build
+    - name: Install and Build Frontend
+      working-directory: ./frontend
+      run: |
+        node -v
+        npm install
+        npm run build
 
     - name: Upload Frontend Artifact
       uses: actions/upload-artifact@v4
@@ -40,7 +32,6 @@ jobs:
 
   build-backend:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
 
@@ -50,14 +41,12 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Create bin directory
-      run: mkdir -p bin
-
-    - name: Compile Backend
+    - name: Create bin and Compile
       run: |
+        mkdir -p bin
         javac -cp "lib/*" -d bin src/com/jobportal/application/*.java src/com/jobportal/application/models/*.java
 
-    - name: Archive Backend Classes
+    - name: Package JAR
       run: |
         cd bin
         jar -cvf ../HireNova-Backend.jar .
@@ -67,19 +56,3 @@ jobs:
       with:
         name: backend-jar
         path: HireNova-Backend.jar
-
-  # Future Deployment Job
-  # deploy:
-  #   needs: [build-frontend, build-backend]
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main'
-  #   steps:
-  #     - name: Download Frontend
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: frontend-dist
-  #     - name: Download Backend
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: backend-jar
-  #     # Add deployment steps here (e.g., to AWS, Heroku, etc.)

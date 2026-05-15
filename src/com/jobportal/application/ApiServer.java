@@ -47,7 +47,11 @@ public class ApiServer {
             return;
         }
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
+        // Use PORT from environment variable (required for Railway/Render)
+        String envPort = System.getenv("PORT");
+        int port = (envPort != null) ? Integer.parseInt(envPort) : PORT;
+
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
         // Handlers
         server.createContext("/api/login", new LoginHandler());
@@ -59,7 +63,7 @@ public class ApiServer {
         server.createContext("/api/health", new HealthHandler());
 
         server.setExecutor(null); // creates a default executor
-        System.out.println("Server started on port " + PORT);
+        System.out.println("Server started on port " + port);
         server.start();
     }
 

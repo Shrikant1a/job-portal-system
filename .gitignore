@@ -9,6 +9,7 @@ yarn-error.log*
 bin/
 *.class
 *.jar
+!lib/*.jar
 *.war
 *.ear
 

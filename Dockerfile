@@ -1,22 +1,21 @@
-# Use OpenJDK 17
+# Build stage
 FROM openjdk:17-jdk-slim
 
-# Set working directory
 WORKDIR /app
 
-# Copy the entire project
-COPY . .
+# Copy only necessary files for the backend build
+COPY lib/ ./lib/
+COPY src/ ./src/
 
 # Create bin directory
 RUN mkdir -p bin
 
 # Compile the Java application
-# We include the lib/*.jar in the classpath
+# Note: Ensure all subpackages are included if they exist
 RUN javac -cp "lib/*" -d bin src/com/jobportal/application/*.java src/com/jobportal/application/models/*.java
 
-# Expose the port (Railway will provide this via environment variable)
+# Run stage
 EXPOSE 8080
 
-# Command to run the application
-# We use the 'port' logic implemented in ApiServer.java
+# The PORT environment variable is automatically handled by the ApiServer code
 CMD ["java", "-cp", "bin:lib/*", "com.jobportal.application.ApiServer"]

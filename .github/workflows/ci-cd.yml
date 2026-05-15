@@ -12,17 +12,25 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup Node.js 22
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 22
+        node-version: '22.12.0'
+        check-latest: true
 
-    - name: Install and Build Frontend
-      working-directory: ./frontend
+    - name: Debug Environment
       run: |
         node -v
-        npm install
-        npm run build
+        npm -v
+        which node
+
+    - name: Install Dependencies
+      working-directory: ./frontend
+      run: npm install
+
+    - name: Build Frontend
+      working-directory: ./frontend
+      run: npx vite build
 
     - name: Upload Frontend Artifact
       uses: actions/upload-artifact@v4
@@ -41,13 +49,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Create bin and Compile
+    - name: Build Backend
       run: |
         mkdir -p bin
         javac -cp "lib/*" -d bin src/com/jobportal/application/*.java src/com/jobportal/application/models/*.java
-
-    - name: Package JAR
-      run: |
         cd bin
         jar -cvf ../HireNova-Backend.jar .
         

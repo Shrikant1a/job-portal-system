@@ -30,96 +30,97 @@ HireNova is a modern, high-fidelity job portal designed to connect talented prof
 
 ## 🚀 Getting Started
 
-Follow these instructions to get the project up and running on your local machine.
+Follow these steps to set up and run HireNova on your local machine.
 
 ### 📋 Prerequisites
 
-Ensure you have the following installed:
-*   **Node.js** (v18 or higher)
-*   **Java Development Kit (JDK)** (v17 or higher)
-*   **MySQL** (If running a local database)
+Before you begin, ensure you have the following installed:
+*   **Java JDK 17 or higher** (Check with `java -version`)
+*   **Node.js v18 or higher** (Check with `node -v`)
+*   **MySQL Server** (If you plan to run the database locally)
+*   **Git** (To clone the repository)
 
 ---
 
-## 💻 Frontend Setup (React + Vite)
+### 1️⃣ Database Setup 🗄️
 
-The frontend is built with React and styled using vanilla CSS for maximum performance and a premium look.
+You can either use the pre-configured cloud database or set up a local MySQL instance.
 
-1.  **Navigate to the frontend directory**:
-    ```bash
-    cd frontend
+#### Option A: Local MySQL (Recommended for development)
+1.  Open your MySQL terminal or a tool like MySQL Workbench.
+2.  Create a new database:
+    ```sql
+    CREATE DATABASE hirenova;
     ```
-
-2.  **Install dependencies**:
+3.  Import the schema and sample data:
     ```bash
-    npm install
+    mysql -u your_username -p hirenova < db/db.sql
     ```
+4.  Configure the environment variables (see below).
 
-3.  **Run the development server**:
-    ```bash
-    npm run dev
-    ```
-    *The app will be available at `http://localhost:5173`.*
+#### Option B: Cloud Database
+The project is pre-configured to connect to a hosted MySQL instance. No setup is required for the database if you use the default credentials in `src/com/jobportal/application/models/DB_VARIABLES.java`.
 
 ---
 
-## ⚙️ Backend Setup (Java API)
+### 2️⃣ Backend Setup (Java API) ⚙️
 
-The backend is a custom Java HTTP server that handles authentication, job matching, and database interactions.
+The backend is a custom Java HTTP server.
 
-1.  **Navigate to the project root directory**.
-
-2.  **Compile the Java files** (if not already compiled):
+1.  **Configure Environment Variables**:
+    Create a `.env` file in the root directory (based on `.env.example`) or set the following environment variables in your terminal:
     ```bash
+    DB_HOST=localhost
+    DB_PORT=3306
+    DB_NAME=hirenova
+    DB_USER=your_username
+    DB_PASSWORD=your_password
+    ```
+
+2.  **Compile the Backend**:
+    From the project root, run:
+    ```powershell
+    # Create bin directory if it doesn't exist
+    mkdir bin
+    
+    # Compile all java files
     javac -cp "lib/*" -d bin src/com/jobportal/application/*.java src/com/jobportal/application/models/*.java
     ```
 
 3.  **Run the API Server**:
-    ```bash
+    ```powershell
     java -cp "bin;lib/*" com.jobportal.application.ApiServer
     ```
-    *The backend server will start on port `8080`.*
+    *The server will start at `http://localhost:8080`.*
 
 ---
 
-## 🗄️ Database Configuration
+### 3️⃣ Frontend Setup (React + Vite) 💻
 
-The system connects to a MySQL database. Configuration can be found in:
-`src/com/jobportal/application/models/DB_VARIABLES.java`
+1.  **Navigate to the frontend folder**:
+    ```bash
+    cd frontend
+    ```
 
-*   **Host**: `buif8mprfkfyazp9pvrn-mysql.services.clever-cloud.com`
-*   **Port**: `3306`
-*   **User**: `uyna0wp8ir8ws061`
+2.  **Install Dependencies**:
+    ```bash
+    npm install
+    ```
 
-> [!NOTE]
-> If you wish to use a local database, update the variables in `DB_VARIABLES.java` to point to your local MySQL instance.
+3.  **Start the Development Server**:
+    ```bash
+    npm run dev
+    ```
+    *The frontend will be available at `http://localhost:5173`.*
 
 ---
 
 ## 🛠️ Tech Stack
 
-*   **Frontend**: React, Vite, Lucide React (Icons), React Router
-*   **Backend**: Pure Java (HTTP Server), GSON (JSON handling)
+*   **Frontend**: React 19, Vite, Lucide React, Axios
+*   **Backend**: Pure Java (Custom HTTP Server), GSON for JSON
 *   **Database**: MySQL
-*   **Design**: Custom CSS, Glassmorphism, Dark Mode
-*   **CI/CD**: GitHub Actions (Automated Builds & Artifacts)
-
----
-
-## 🚀 CI/CD Pipeline
-
-The project includes a robust CI/CD pipeline powered by **GitHub Actions**:
-- **Frontend Build**: Automatically builds and validates the React application using Node.js 22.
-- **Backend Build**: Compiles Java source files and packages them into a JAR.
-- **Artifacts**: Each successful build generates production-ready artifacts for both the frontend and backend.
-
-For more details, see the [CI/CD Documentation](docs/ci-cd-pipeline.md).
-
-## 🤝 Support
-
-For any issues or inquiries, please contact the support team at **support@hirenova.com**.
-
-© 2026 HireNova. Built with ❤️ for professionals worldwide.
+*   **Aesthetics**: Glassmorphism, Dark Mode, Custom Vanilla CSS
 
 ---
 
@@ -133,4 +134,23 @@ For any issues or inquiries, please contact the support team at **support@hireno
 
 ### 🗄️ Database Schema
 ![Database Schema](db.png)
+
+---
+
+## 🚀 CI/CD Pipeline
+
+The project uses GitHub Actions for automated builds:
+- **Frontend**: Built and validated on every push.
+- **Backend**: Compiled and packaged into artifacts.
+- **Deployment**: Configured for Railway (Backend) and Netlify (Frontend).
+
+---
+
+## 🤝 Support & Contact
+
+If you encounter any issues during setup, please reach out:
+📧 **Email**: support@hirenova.com
+🌐 **Website**: [hirenova.com](https://hirenova.com)
+
+© 2026 HireNova. Designed with precision and built for performance.
 

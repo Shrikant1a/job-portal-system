@@ -65,6 +65,7 @@ public class ApiServer {
     static class LoginHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+            App.reconnect();
             addCorsHeaders(exchange);
             if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1);
@@ -100,6 +101,7 @@ public class ApiServer {
     static class SignupHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+            App.reconnect();
             addCorsHeaders(exchange);
             if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1);
@@ -152,6 +154,7 @@ public class ApiServer {
     static class JobsHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+            App.reconnect();
             addCorsHeaders(exchange);
             if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1);
@@ -185,6 +188,7 @@ public class ApiServer {
     static class CompaniesHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+            App.reconnect();
             addCorsHeaders(exchange);
             if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1);
@@ -212,6 +216,7 @@ public class ApiServer {
     static class ProfileHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
+            App.reconnect();
             addCorsHeaders(exchange);
             if ("OPTIONS".equalsIgnoreCase(exchange.getRequestMethod())) {
                 exchange.sendResponseHeaders(204, -1);

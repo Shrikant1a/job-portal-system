@@ -59,6 +59,17 @@ public class App {
     public static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d MMM uuuu");
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d MMM uuuu 'at' hh:mm a");
 
+    public static void reconnect() {
+        try {
+            if (conn == null || conn.isClosed()) {
+                conn = DriverManager.getConnection("jdbc:mysql://" + DB_VARIABLES.HOST + ":" + DB_VARIABLES.PORT + "/" + DB_VARIABLES.DB + "?autoReconnect=true&useSSL=false", DB_VARIABLES.USER, DB_VARIABLES.PASSWORD);
+                System.out.println("Database successfully reconnected");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static String hashPassword(String s) throws NoSuchAlgorithmException{
         MessageDigest m=MessageDigest.getInstance("MD5");
         m.update(s.getBytes(),0,s.length());

@@ -67,10 +67,7 @@ The frontend is built with React and styled using vanilla CSS for maximum perfor
 
 The backend is a custom Java HTTP server that handles authentication, job matching, and database interactions.
 
-1.  **Navigate to the root directory**:
-    ```bash
-    cd Job-Portal
-    ```
+1.  **Navigate to the project root directory**.
 
 2.  **Compile the Java files** (if not already compiled):
     ```bash
@@ -105,8 +102,16 @@ The system connects to a MySQL database. Configuration can be found in:
 *   **Backend**: Pure Java (HTTP Server), GSON (JSON handling)
 *   **Database**: MySQL
 *   **Design**: Custom CSS, Glassmorphism, Dark Mode
+*   **CI/CD**: GitHub Actions (Automated Builds & Artifacts)
 
 ---
+
+## 🚀 CI/CD Pipeline
+
+The project includes a robust CI/CD pipeline powered by **GitHub Actions**:
+- **Frontend Build**: Automatically builds and validates the React application using Node.js 22.
+- **Backend Build**: Compiles Java source files and packages them into a JAR.
+- **Artifacts**: Each successful build generates production-ready artifacts for both the frontend and backend.
 
 ## 🤝 Support
 

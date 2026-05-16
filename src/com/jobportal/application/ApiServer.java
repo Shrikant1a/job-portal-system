@@ -53,14 +53,21 @@ public class ApiServer {
 
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
-        // Handlers
+        // Handlers - supporting both /api and root routes for resilience
         server.createContext("/api/login", new LoginHandler());
+        server.createContext("/login", new LoginHandler());
+        
         server.createContext("/api/signup", new SignupHandler());
+        server.createContext("/signup", new SignupHandler());
+        
         server.createContext("/api/jobs", new JobsHandler());
         server.createContext("/api/companies", new CompaniesHandler());
         server.createContext("/api/profile", new ProfileHandler());
         server.createContext("/api/external-jobs", new ExternalJobsHandler());
+        
         server.createContext("/api/health", new HealthHandler());
+        server.createContext("/health", new HealthHandler());
+        
         server.createContext("/", new DefaultHandler()); // Handle root and 404s
 
         server.setExecutor(null); // creates a default executor

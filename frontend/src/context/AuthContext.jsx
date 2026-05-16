@@ -6,6 +6,10 @@ let API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8080/api';
 if (API_BASE_URL.endsWith('/')) {
   API_BASE_URL = API_BASE_URL.slice(0, -1);
 }
+// Ensure the URL ends with /api
+if (!API_BASE_URL.endsWith('/api')) {
+  API_BASE_URL = `${API_BASE_URL}/api`;
+}
 
 export const useAuth = () => {
   return useContext(AuthContext);
